@@ -1,0 +1,43 @@
+﻿@page "/contacts/{Id}"
+@using ContactsFront.Api
+@inject ContactsApiClient Api
+@inject NavigationManager NavManager
+
+<h3>Contact summary</h3>
+
+@if (contact == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul>
+        <li>Firstname: @contact.FirstName</li>
+        <li>Surname: @contact.Surname</li>
+        <li>Email: @contact.Email</li>
+        <li>Category: @contact.Category</li>
+        <li>Subcategory: @contact.Subcategory</li>
+        <li>Phone: @contact.Phone</li>
+        <li>Date of birth: @contact.BirthDate?.ToShortDateString()</li>
+    </ul>
+    <button @onclick="() => NavManager.NavigateTo(EditUrl)">Edit</button>
+    <button @onclick="() => NavManager.NavigateTo(BackUrl)">Back</button>
+
+}
+
+@code {
+    [Parameter] 
+    public string Id { get; set; }
+    private Guid ContactId => Guid.Parse(Id);
+
+    private string EditUrl => $"/contacts/edit/{Id}";
+    private string BackUrl => "/contactlist";
+
+    private Contact contact;
+
+    protected override async Task OnInitializedAsync()
+    {
+        contact = await Api.GetContactAsync(ContactId);
+    }
+}
+

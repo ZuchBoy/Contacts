@@ -23,7 +23,8 @@ OpenApiContact myContact = new()
 };
 
 builder.Services.AddSwaggerGen
-(options => {
+(options =>
+{
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -52,6 +53,7 @@ builder.Services.AddSwaggerGen
     options.SwaggerDoc("v1", new OpenApiInfo() { Title = "Contacts", Contact = myContact });
 });
 
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 
 builder.Services.AddDbContext<ContactContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -75,12 +77,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("default");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();       
+    app.UseSwagger();
     app.UseSwaggerUI();
 }
 

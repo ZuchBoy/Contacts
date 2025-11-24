@@ -35,14 +35,6 @@ namespace Contacts.Controllers
             return Ok(contact);
         }
 
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Create([FromBody] Contact contact)
-        {
-            var newContact = _contactService.Create(contact);
-            return CreatedAtAction(nameof(Get), new { id = newContact.Id }, newContact);
-        }
-
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> Update([FromBody] Contact contact)
@@ -56,7 +48,5 @@ namespace Contacts.Controllers
         {
             return await _contactService.Delete(id) ? NoContent() : NotFound();
         }
-
-
     }
 }

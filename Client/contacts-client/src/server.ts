@@ -5,12 +5,37 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
+// Use require here to avoid TypeScript compile issues when building the browser bundle.
+// The server build will run in Node where this package is available.
+// @ts-ignore
+const { createProxyMiddleware } = require('http-proxy-middleware');
 import { join } from 'node:path';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+
+// Proxy API and auth requests to the backend server to avoid CORS and
+// to make server-side rendering requests hit the real backend.
+app.use(
+  '/api',
+  createProxyMiddleware({
+    target: 'https://localhost:7154',
+    changeOrigin: true,
+    secure: false,
+    pathRewrite: { '^/api': '' },
+  }),
+);
+
+app.use(
+  '/auth',
+  createProxyMiddleware({
+    target: 'https://localhost:7154',
+    changeOrigin: true,
+    secure: false,
+  }),
+);
 
 /**
  * Example Express Rest API endpoints can be defined here.

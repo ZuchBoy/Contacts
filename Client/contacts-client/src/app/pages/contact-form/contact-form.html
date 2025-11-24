@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <h2>{{ isEdit ? "Edit contact" : "Create contact" }}</h2>
+
+  <form (ngSubmit)="save()">
+    <div class="mb-3">
+      <label>Name</label>
+      <input class="form-control" [(ngModel)]="model.firstName" name="firstName" required />
+    </div>
+
+    <div class="mb-3">
+      <label>Surname</label>
+      <input class="form-control" [(ngModel)]="model.surname" name="surname" required />
+    </div>
+    
+    <div class="mb-3">
+      <label>E-Mail</label>
+      <input class="form-control" [(ngModel)]="model.email" name="email" required />
+    </div>
+
+    <div class="mb-3">
+      <label>Category</label>
+      <input class="form-control" [(ngModel)]="model.category" name="category" required />
+    </div>
+
+    <div class="mb-3">
+      <label>Subcategory</label>
+      <input class="form-control" [(ngModel)]="model.subcategory" name="subcategory" required />
+    </div>
+
+    <div class="mb-3">
+      <label>Phone number</label>
+      <input class="form-control" [(ngModel)]="model.phone" name="phone" required />
+    </div>
+
+    <div class="mb-3">
+      <label>Date of birth</label>
+      <input type="date" class="form-control" [(ngModel)]="model.birthDate" name="birthdate" required />
+    </div>
+
+    <button class="btn btn-primary">Save</button>
+    <a class="btn btn-secondary ms-2" routerLink="/contacts">Cancel</a>
+  </form>
+</div> 

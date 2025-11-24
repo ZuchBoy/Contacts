@@ -13,14 +13,32 @@ namespace Contacts.Services
             _dbContext = contactContext;
         }
 
-        public async Task<bool> Create(Contact contact)
-        {
-            _dbContext.Contacts.Add(contact);
-            if (await _dbContext.SaveChangesAsync() > 0)
-                return true;
-            else
-                return false;
-        }
+        //public async Task<bool> Create(RegisterModel contact)
+        //{
+        //    Contact newContact = new Contact
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        FirstName = contact.FirstName,
+        //        Surname = contact.Surname,
+        //        Email = contact.Email,
+        //        Category = new Category { Name = contact.Category },
+        //        };
+
+        //    User newUser = new User
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        ContactId = newContact.Id,
+        //        Username = contact.Email,
+        //        PwdHash = contact.Password 
+        //    };
+
+        //    _dbContext.Contacts.Add(newContact);
+        //    _dbContext.Users.Add(newUser);
+        //    if (await _dbContext.SaveChangesAsync() > 0)
+        //        return true;
+        //    else
+        //        return false;
+        //}
 
         public async Task<bool> Delete(Guid id)
         {
@@ -36,7 +54,6 @@ namespace Contacts.Services
                 return false;
             }
         }
-
         public async Task<Contact> Get(Guid id)
         {
             return await _dbContext.Contacts.FirstAsync(c => c.Id == id);

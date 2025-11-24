@@ -3,28 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36705.20
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contacts", "Contacts.csproj", "{FE47325C-EDCB-4EDC-9B8B-89DC9FE91287}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsFront", "ContactsFront\ContactsFront.csproj", "{709C6ACD-1238-47F2-9B18-3EDD3E732C66}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "contacts-client", "Client\contacts-client\", "{618D5E2E-87FE-F6B2-F6B5-6F5078FF47D0}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_61480"
-		Debug.AspNetCompiler.PhysicalPath = "Client\contacts-client\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61480\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_61480"
-		Release.AspNetCompiler.PhysicalPath = "Client\contacts-client\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61480\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "61480"
-		SlnRelativePath = "Client\contacts-client\"
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contacts", "Contacts\Contacts.csproj", "{5FA650AE-FB35-A319-A825-87724AE67A4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FE47325C-EDCB-4EDC-9B8B-89DC9FE91287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE47325C-EDCB-4EDC-9B8B-89DC9FE91287}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE47325C-EDCB-4EDC-9B8B-89DC9FE91287}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE47325C-EDCB-4EDC-9B8B-89DC9FE91287}.Release|Any CPU.Build.0 = Release|Any CPU
-		{618D5E2E-87FE-F6B2-F6B5-6F5078FF47D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{618D5E2E-87FE-F6B2-F6B5-6F5078FF47D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{618D5E2E-87FE-F6B2-F6B5-6F5078FF47D0}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{618D5E2E-87FE-F6B2-F6B5-6F5078FF47D0}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{709C6ACD-1238-47F2-9B18-3EDD3E732C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{709C6ACD-1238-47F2-9B18-3EDD3E732C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{709C6ACD-1238-47F2-9B18-3EDD3E732C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{709C6ACD-1238-47F2-9B18-3EDD3E732C66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FA650AE-FB35-A319-A825-87724AE67A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FA650AE-FB35-A319-A825-87724AE67A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FA650AE-FB35-A319-A825-87724AE67A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FA650AE-FB35-A319-A825-87724AE67A4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

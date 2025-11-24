@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <div class="d-flex" justify-content-between align-items-center mb-3>
+    <h2>Contacts</h2>
+    <div>
+      <button class="btn btn-success me-2" routerLink="/contacts/add">Add</button>
+      <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
+  <table class="table table-striped" *ngIf="contacts.length">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Category</th>
+        <th>Subcategory</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let cont of contacts">
+          <td>{{ cont.firstName }}</td>
+          <td>{{ cont.surname }}</td>
+          <td>{{ cont.email }}</td>
+          <td>{{ cont.category }}</td>
+
+          <td class="text-end">
+            <button class="btn btn-info btn-sm me-1" [routerLink]="['/contacts', cont.id]">Summary</button>
+            <button class="btn btn-warning btn-sm me-1" [routerLink]="['/contacts/edit', cont.id]">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="delete(cont.id)">Delete</button>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,10 @@
+<div class="container mt-4" *ngIf="contact">
+  <h2> {{ contact.firstName }} {{ contact.surname }}</h2>
+
+  <p><strong>Email:</strong>{{ contact.email }}</p>
+  <p><strong>Category:</strong>{{ contact.category }}</p>
+  <p><strong>Phone:</strong>{{ contact.phone }}</p>
+  <p><strong>Date of birth:</strong>{{ contact.birthDate }}</p>
+
+  <button class="btn btn-secondary mt-3" routerLink="/contacts">Back</button>
+</div>

@@ -1,0 +1,65 @@
+﻿@page "/contacts/edit/{Id}"
+@using ContactsFront.Api
+@inject ContactsApiClient Api
+@inject NavigationManager NavManager
+
+<h3>"Edytuj kontakt"</h3>
+
+<EditForm Model="contact" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Imię:</label>
+        <InputText @bind-Value="contact.FirstName" />
+    </div>
+    <div>
+        <label>Nazwisko:</label>
+        <InputText @bind-Value="contact.Surname" />
+    </div>
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="contact.Email" />
+    </div>
+    <div>
+        <label>Kategoria:</label>
+        <InputSelect @bind-Value="contact.Category">
+            <option value="">Wybierz</option>
+            <option value="Służbowy">Służbowy</option>
+            <option value="Prywatny">Prywatny</option>
+            <option value="Inny">Inny</option>
+        </InputSelect>
+    </div>
+    <div>
+        <label>Telefon:</label>
+        <InputText @bind-Value="contact.Phone" />
+    </div>
+    <div>
+        <label>Data urodzenia:</label>
+        <InputDate @bind-Value="contact.BirthDate" />
+    </div>
+
+    <button type="submit">Zapisz</button>
+    <button @onclick="() => NavManager.NavigateTo(BackUrl)">Back</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private Contact contact = new();
+    private RegisterModel newContact = new();
+    private string BackUrl => "/contactlist";
+
+    protected override async Task OnInitializedAsync()
+    {
+        contact = await Api.GetContactAsync(Guid.Parse(Id));
+    }
+
+    private async Task HandleSubmit()
+    {
+        await Api.UpdateContactAsync(Guid.Parse(Id), contact);
+
+        NavManager.NavigateTo("/contacts");
+    }
+}
+
