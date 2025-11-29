@@ -1,18 +1,28 @@
-﻿namespace ContactsFront.Api;
+﻿using ContactsFront.Services;
+
+namespace ContactsFront.Api;
 
 public class ContactsApiClient
 {
     private readonly HttpClient _http;
+    private readonly AuthService _auth;
 
-    public ContactsApiClient(HttpClient http)
+    public ContactsApiClient(HttpClient http, AuthService authService)
     {
         _http = http;
-    }
+        _auth = authService;
+	}
 
-    public void SetBearerToken(string token)
-    {
-        _http.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+    public async Task<bool> SetBearerToken() {
+        try {
+            string token = await _auth.GetTokenSafeAsync();
+
+            _http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     // GET /Contact
@@ -24,19 +34,34 @@ public class ContactsApiClient
     // GET /Contact/{id}
     public async Task<Contact?> GetContactAsync(Guid id)
     {
+        await SetBearerToken();
         return await _http.GetFromJsonAsync<Contact>($"/Contact/{id}");
     }
 
     // PUT /Contact/{id}
     public async Task<HttpResponseMessage> UpdateContactAsync(Guid id, Contact contact)
     {
-        return await _http.PutAsJsonAsync($"/Contact/{id}", contact);
-    }
+		await SetBearerToken();
+
+        ContactDTO contactDTO = new ContactDTO(
+            contact.Id,
+            contact.FirstName ?? "",
+            contact.Surname ?? "",
+            contact.Email ?? "",
+            contact.Phone,
+            contact.BirthDate.HasValue ? contact.BirthDate.Value.ToString("yyyy-MM-dd") : "",
+            contact.CategoryId,
+            contact.SubcategoryId
+        );
+
+		return await _http.PutAsJsonAsync($"/Contact/{id}", contactDTO);
+	}
 
     // DELETE /Contact/{id}
     public async Task<HttpResponseMessage> DeleteContactAsync(Guid id)
     {
-        return await _http.DeleteAsync($"/Contact/{id}");
+		await SetBearerToken();
+		return await _http.DeleteAsync($"/Contact/{id}");
     }
 }
 
@@ -93,3 +118,5 @@ public class RegisterModel {
     public string Password { get; set; }
     public int CategoryId { get; set; }
 }
+
+public record ContactDTO(Guid Id, string FirstName, string Surname, string Email, string? Phone, string DateOfBirth, int CategoryId, int? SubcategoryId);

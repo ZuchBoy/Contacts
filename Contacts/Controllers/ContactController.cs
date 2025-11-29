@@ -37,9 +37,10 @@ namespace Contacts.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Update([FromBody] Contact contact)
+        public async Task<IActionResult> Update(Guid id, [FromBody] ContactDTO contact)
         {
-            return await _contactService.Update(contact) ? NoContent() : NotFound();
+			// obsłużyć NotModified
+			return await _contactService.Update(id, contact) ? NoContent() : NotFound();
         }
 
         [HttpDelete("{id}")]
@@ -48,5 +49,16 @@ namespace Contacts.Controllers
         {
             return await _contactService.Delete(id) ? NoContent() : NotFound();
         }
+
+        [HttpGet("debug/token")]
+        [AllowAnonymous]
+        public IActionResult DebugToken()
+        {
+            return Ok(new
+            {
+                AuthHeader = Request.Headers.Authorization.ToString()
+            });
+        }
+
     }
 }

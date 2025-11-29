@@ -1,6 +1,7 @@
 ﻿using Contacts.Interfaces;
 using Contacts.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Transactions;
 
 namespace Contacts.Services
 {
@@ -43,14 +44,25 @@ namespace Contacts.Services
         public async Task<bool> Delete(Guid id)
         {
             var c = await _dbContext.Contacts.FirstAsync(c => c.Id == id);
-            if (c != null)
-            {
-                _dbContext.Contacts.Remove(c);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-            else
-            {
+            if (c != null) {
+				await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+				try {
+                    transaction.CreateSavepoint("BeforeDeleteContact");
+                    _dbContext.Users.Where(u => u.ContactId == c.Id)
+                        .ExecuteDeleteAsync().Wait();
+                    await _dbContext.SaveChangesAsync();
+
+					_dbContext.Contacts.Remove(c);
+                    await _dbContext.SaveChangesAsync();
+
+                    await transaction.CommitAsync();
+
+					return true;
+                } catch {
+                    await transaction.RollbackToSavepointAsync("BeforeDeleteContact");
+					return false;
+                }
+            } else {
                 return false;
             }
         }
@@ -64,15 +76,25 @@ namespace Contacts.Services
             return await _dbContext.Contacts.ToListAsync();
         }
 
-        public async Task<bool> Update(Contact contact)
+        public async Task<bool> Update(Guid contactId, ContactDTO contact)
         {
-            var c = await _dbContext.Contacts.FirstAsync(c => c.Id == contact.Id);
+            var c = await _dbContext.Contacts.FirstAsync(c => c.Id == contactId);
             if (c != null) {
-                c = contact;
+                c.FirstName = contact.FirstName;
+                c.Surname = contact.Surname;
+                c.Email = contact.Email;
+                c.Phone = contact.Phone;
+                if (DateOnly.TryParse(contact.DateOfBirth, out var dob)) {
+                    c.BirthDate = dob;
+                } else {
+                    c.BirthDate = null;
+				}
+                c.CategoryId = contact.CategoryId;
+                c.SubcategoryId = contact.SubcategoryId;
+                _dbContext.Entry(c).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
                 return true;
-            } else
-            {
+            } else {
                 return false;
             }
         }
